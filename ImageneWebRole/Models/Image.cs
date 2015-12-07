@@ -1,4 +1,4 @@
-﻿namespace OrderezeTask
+﻿namespace ImageWebRole.Model
 {
     public class Image {
         /// <summary>

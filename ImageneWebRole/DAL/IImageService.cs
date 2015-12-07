@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using ImageWebRole.Model;
 
-namespace OrderezeTask
+namespace ImageWebRole.DAL
 {
     /// <summary>
     /// Service responsible managing all Images operations
