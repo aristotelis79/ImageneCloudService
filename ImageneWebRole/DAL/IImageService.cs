@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ImageneWebRole.Models;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace ImageneWebRole.DAL
 {
@@ -19,7 +20,7 @@ namespace ImageneWebRole.DAL
         /// Adds the supplied <paramref name="image"/> to the system and returns the Id.
         /// Part of the operation is to store the Image in the blob storage.
         /// </summary>
-        Task<int> AddNewImage (Image image);
+        Task<int> AddNewImage (Image image, HttpPostedFileBase imageFile);
 
         /// <summary>
         /// Deletes the Image with the supplied <paramref name="id"/> from the system 

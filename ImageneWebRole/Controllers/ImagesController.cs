@@ -14,12 +14,12 @@ namespace ImageneWebRole.Controllers
 {
     public class ImagesController : Controller
     {
-        private BlobStrorageServices StorageServise = new BlobStrorageServices();
+        private BlobStrorageServices StorageService = new BlobStrorageServices();
 
         // GET: Images
         public async Task<ActionResult> Index()
         {
-            return View(await StorageServise.GetImages());
+            return View(await StorageService.GetImages());
         }
 
         // GET: Images/Details/5
@@ -29,7 +29,7 @@ namespace ImageneWebRole.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Image image = await StorageServise.GetImage(id);
+            Image image = await StorageService.GetImage(id);
             if (image == null)
             {
                 return HttpNotFound();
@@ -48,13 +48,11 @@ namespace ImageneWebRole.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,Description,ImagePath")] Image image)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,Description,ImagePath")] Image image, HttpPostedFileBase imageFile)
         {
             if (ModelState.IsValid)
             {
-                //db.Images.Add(image);
-                //await db.SaveChangesAsync();
-                await StorageServise.AddNewImage(image);
+                await StorageService.AddNewImage(image, imageFile);
                 return RedirectToAction("Index");
             }
 
@@ -68,7 +66,7 @@ namespace ImageneWebRole.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Image image = await StorageServise.GetImage(id);
+            Image image = await StorageService.GetImage(id);
             if (image == null)
             {
                 return HttpNotFound();
@@ -81,11 +79,11 @@ namespace ImageneWebRole.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,Description,ImagePath")] Image image)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,Description,ImagePath")] Image image, HttpPostedFileBase imageFile)
         {
             if (ModelState.IsValid)
             {
-                await StorageServise.Edit(image);
+                await StorageService.Edit(image, imageFile);
                 return RedirectToAction("Index");
             }
             return View(image);
@@ -98,7 +96,7 @@ namespace ImageneWebRole.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Image image = await StorageServise.GetImage(id);
+            Image image = await StorageService.GetImage(id);
             if (image == null)
             {
                 return HttpNotFound();
@@ -111,7 +109,7 @@ namespace ImageneWebRole.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            StorageServise.DeleteImage(id);
+            StorageService.DeleteImage(id);
             return RedirectToAction("Index");
         }
 
