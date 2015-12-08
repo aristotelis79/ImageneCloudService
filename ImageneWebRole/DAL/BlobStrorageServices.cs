@@ -36,6 +36,7 @@ namespace ImageneWebRole.DAL
             }
         }
 
+        //Create a Blob with the picture in CloudDataBase and save the the link of ImagePath in Image object and return the object 
         async private Task<Image> AddNewBlob (Image image, HttpPostedFileBase imageFile)
         {
             BlobStrorageServices blobStorageService = new BlobStrorageServices();
