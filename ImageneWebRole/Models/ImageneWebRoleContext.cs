@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Threading.Tasks;
 
 namespace ImageneWebRole.Models
 {
@@ -19,6 +20,6 @@ namespace ImageneWebRole.Models
         {
         }
 
-        public System.Data.Entity.DbSet<ImageWebRole.Model.Image> Images { get; set; }
+        public DbSet<Image> Images { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ImageWebRole.Model
+﻿namespace ImageneWebRole.Models
 {
     public class Image {
         /// <summary>

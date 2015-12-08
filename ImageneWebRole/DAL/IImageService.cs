@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using ImageWebRole.Model;
+using ImageneWebRole.Models;
+using System.Threading.Tasks;
 
-namespace ImageWebRole.DAL
+namespace ImageneWebRole.DAL
 {
     /// <summary>
     /// Service responsible managing all Images operations
@@ -12,18 +13,18 @@ namespace ImageWebRole.DAL
         /// Returns all images 
         /// </summary>
         /// <returns></returns>
-        List<Image> GetImages();
+        Task<List<Image>> GetImages();
 
         /// <summary>
         /// Adds the supplied <paramref name="image"/> to the system and returns the Id.
         /// Part of the operation is to store the Image in the blob storage.
         /// </summary>
-        int AddNewImage(Image image);
+        Task<int> AddNewImage (Image image);
 
         /// <summary>
         /// Deletes the Image with the supplied <paramref name="id"/> from the system 
         /// and deletes the file from the blob storage as well.
         /// </summary>
-        void DeleteImage(int id);
+        void DeleteImage (int id);
     }
 }

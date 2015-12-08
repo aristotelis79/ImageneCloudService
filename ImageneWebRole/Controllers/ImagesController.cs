@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using ImageWebRole.Model;
 using ImageneWebRole.Models;
+using ImageneWebRole.DAL;
 
 namespace ImageneWebRole.Controllers
 {
     public class ImagesController : Controller
     {
-        private ImageneWebRoleContext db = new ImageneWebRoleContext();
+        private BlobStrorageServices StorageServise = new BlobStrorageServices();
 
         // GET: Images
         public async Task<ActionResult> Index()
         {
-            return View(await db.Images.ToListAsync());
+            return View(await StorageServise.GetImages());
         }
 
         // GET: Images/Details/5
@@ -29,7 +29,7 @@ namespace ImageneWebRole.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Image image = await db.Images.FindAsync(id);
+            Image image = await StorageServise.GetImage(id);
             if (image == null)
             {
                 return HttpNotFound();
@@ -52,8 +52,9 @@ namespace ImageneWebRole.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Images.Add(image);
-                await db.SaveChangesAsync();
+                //db.Images.Add(image);
+                //await db.SaveChangesAsync();
+                await StorageServise.AddNewImage(image);
                 return RedirectToAction("Index");
             }
 
@@ -67,7 +68,7 @@ namespace ImageneWebRole.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Image image = await db.Images.FindAsync(id);
+            Image image = await StorageServise.GetImage(id);
             if (image == null)
             {
                 return HttpNotFound();
@@ -84,8 +85,7 @@ namespace ImageneWebRole.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(image).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                await StorageServise.Edit(image);
                 return RedirectToAction("Index");
             }
             return View(image);
@@ -98,7 +98,7 @@ namespace ImageneWebRole.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Image image = await db.Images.FindAsync(id);
+            Image image = await StorageServise.GetImage(id);
             if (image == null)
             {
                 return HttpNotFound();
@@ -109,16 +109,15 @@ namespace ImageneWebRole.Controllers
         // POST: Images/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            Image image = await db.Images.FindAsync(id);
-            db.Images.Remove(image);
-            await db.SaveChangesAsync();
+            StorageServise.DeleteImage(id);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
+            ImageneWebRoleContext db = new ImageneWebRoleContext();
             if (disposing)
             {
                 db.Dispose();
